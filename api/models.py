@@ -1,8 +1,34 @@
 from django.db import models
 
 
-# Create your models here.
-class Order(models.Model):
-    # Add your model here
-    pass
-
+class Organization(models.Model):
+    abbr = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
+    
+class Audience(models.Model):
+    organization = models.ForeignKey("api.Organization", on_delete=models.CASCADE)
+    member_sn = models.TextField()
+    name = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["organization", "member_sn"],
+                name="audience_unique_member_sn",
+            ),
+        ]
+    
+    
+class Tag(models.Model):
+    organization = models.ForeignKey("api.Organization", on_delete=models.CASCADE)
+    name = models.TextField()
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["organization", "name"],
+                name="tag_unique_name",
+            ),
+        ]
