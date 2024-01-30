@@ -5,13 +5,15 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
+      - ./db-init-scripts:/docker-entrypoint-initdb.d:cached
     ports:
-      - 7432:7432
+      - 5432:5432
     environment:
-      - POSTGRES_NAME=postgres
+      - POSTGRES_NAME=pretest_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    command: -p 7432
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    command: -p 5432
 
   web:
     build:
@@ -22,10 +24,10 @@ services:
     ports:
       - "8008:8008"
     environment:
-      - POSTGRES_NAME=postgres
+      - POSTGRES_NAME=pretest_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_PORT=7432
+      - POSTGRES_PORT=5432
     command: sh run_web.sh
     depends_on:
       - db
