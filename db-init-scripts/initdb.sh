@@ -2,7 +2,7 @@
 
 # if there is an initial database, load the initial db automatically
 # put the backup in db/pgsql_backup
-# the backup can be created by running "pg_dump -Fc omnianalytics_db > pgsql_backup"
+# the backup can be created by running "pg_dump -Fc pretest_db > demo_db"
 
 DB_NAME=pretest_db
 
